@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
+import { IoMenuOutline } from "react-icons/io5";
 import { RiVipDiamondLine } from "react-icons/ri";
 
 const headerlinks: {
@@ -27,30 +29,64 @@ const headerlinks: {
     href: "#dance-practices",
   },
   {
-    name: "Live Performances",
-    href: "#live-performances",
+    name: "Treasure Map",
+    href: "treasure-map",
   },
   {
-    name: "Treasure Map",
-    href: "#treasure-map",
+    name: "Others",
+    href: "#others",
   },
 ];
 
 export const Header = () => {
+  const [isopen, setisopen] = useState(false);
+
+  function openMenu() {
+    setisopen(!isopen);
+    console.log(isopen);
+  }
   return (
     <header
       className={
-        "bg-sky-400 w-full h-10 absolute flex justify-around items-center"
+        "bg-sky-400 w-full h-16  flex justify-around items-center fixed"
       }
     >
-      <RiVipDiamondLine color="white" size={30} />
-      <ul className={"gap-4 flex"}>
+      <ul className={"gap-4 hidden lg:flex"}>
+        <RiVipDiamondLine size={30} />
         {headerlinks.map(({ name, href }, index) => (
-          <Link key={index} href={href} className={"bg-sky-500 rounded-md border-2 px-2"}>
+          <Link
+            key={index}
+            href={href}
+            className={
+              "bg-sky-500 min-w-30 items-center rounded-md border-2 px-2 flex"
+            }
+          >
             {name}
           </Link>
         ))}
       </ul>
+
+      <button onClick={openMenu} className="absolute left-3 lg:hidden">
+        <IoMenuOutline size={30} />
+      </button>
+      <ul className={`w-40 flex flex-col px-3 absolute left-10 top-2 p-2 bg-sky-300
+      transition-all lg:hidden
+      ${isopen ? "flex " : "-translate-y-80"}
+      `}>
+        
+        {  headerlinks.map(({ name, href }, index) => (
+            <Link
+              key={index}
+              href={href}
+              className={
+                "bg-sky-500 min-w-30 items-center rounded-md border-2 px-2 flex"
+              }
+            >
+              {name}
+            </Link>
+          ))}
+      </ul>
+
     </header>
   );
 };
